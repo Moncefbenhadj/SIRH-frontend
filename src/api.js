@@ -38,7 +38,7 @@ export const listeEmployes = () => {
 
     })*/
         
-    return fetch(`${api_root}/employe/`, {
+    return fetch(`${api_root}/employe`, {
         method:'GET',
         //body: reqBody,
         headers: {
