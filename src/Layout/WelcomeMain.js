@@ -7,6 +7,7 @@ import ListeEmployes from './ListeEmployes';
 import AjouterEmployer from './AjouterEmployer';
 import Promotion from './Promotion';
 import Formation from './Formation';
+import ModifierPersonnel from './ModifierPersonnel'
 const WelcomeMain = () => {
     const useStyles = makeStyles((theme) => ({}));
     const classes = useStyles();
@@ -17,16 +18,10 @@ const WelcomeMain = () => {
             <Switch>
                 
                 <Route path="/ListeEmployes" component={ListeEmployes} />
-
-
-
-                 <Route path="/AjouterEmployer" component={AjouterEmployer} /> 
-
-                 
+                 <Route path="/AjouterEmployer" component={AjouterEmployer} />
                  <Route path="/Promotion" component={Promotion} />
-
-
                  <Route path="/Formation" component={Formation} />
+                 <Route path="/ModifierPersonnel/:id" component={ModifierPersonnel}/>
 
 
             </Switch>

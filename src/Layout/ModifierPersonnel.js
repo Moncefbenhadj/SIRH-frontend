@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,10 +12,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {ajouter} from '../api';
+import {ajouter, getEmploye, modifier} from '../api';
 import Menu from '@material-ui/icons/Menu';
 import { List, MenuList } from '@material-ui/core';
 import { useForm } from "react-hook-form";
+import { useParams } from 'react-router';
+import moment from 'moment'
+import swal from 'sweetalert';
 //import {BrowserRouter as Link} from 'react-router-dom';
 
 function Copyright() {
@@ -63,13 +66,12 @@ const currencies = [
   
 ];
 
-export default function SignUp() {
+export default function ModifierPersonnel() {
   const classes = useStyles();
+  let { id } = useParams();
+  const [employe,setEmploye]=useState({});
 
-  const { register, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
-
-
+  const [idemp,setIdemp] = React.useState(id);
   const [nom,setNom] = React.useState('');
   const [prenom,setPrenom] = React.useState('');
   const [email,setEmail] = React.useState('');
@@ -79,6 +81,24 @@ export default function SignUp() {
   const [datenaissance,setDatenaissance] = React.useState('');
   const [daterecrutement,setDaterecrutement] = React.useState('');
   const [currency, setCurrency] = React.useState('');
+
+  useEffect(() => {
+      console.log(' id coming for datatable',idemp)
+    getEmploye(id).then( (employe) => {
+        console.log('  employe complet',id)
+        setIdemp(id)
+        setNom(employe.nom)
+        setPrenom(employe.prenom)
+        setEmail(employe.email)
+        setNtel(employe.Ntel)
+        setAdresse(employe.adresse)
+        setSexe(employe.sexe)
+        setDatenaissance(employe.datenaissance)
+        setDaterecrutement(employe.daterecrutement)
+    })
+  }, []);
+
+  
 
   const handleNomChange = (event)=>{ 
     setNom(event.target.value)
@@ -122,6 +142,28 @@ export default function SignUp() {
     setCurrency(event.target.value);
   };
 
+  const handleModifier = async (event) =>{
+      console.log(' dqns hqndle id is :',idemp)
+    event.preventDefault();
+    let empolyeUpdated={idemp,nom,prenom,email,Ntel,adresse,sexe,datenaissance,daterecrutement}
+   
+   const res =await modifier(empolyeUpdated,idemp);
+   console.log("reponse du modif",res.status)
+   
+   switch(res.status){
+       case 200: swal("Modification réussite !", "Modification effectué avec succés!", "success"); break;
+       case 500: swal("Modification échoué !", "Modification effectué avec succés!", "error"); break;
+       default: console.log(""); 
+   }
+
+
+   if(res.status==200){
+    swal("Modification !", "Modification effectué avec succés!", "success");
+   }
+
+    
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -134,18 +176,22 @@ export default function SignUp() {
         </Typography>
         
     
-        <form className={classes.form} noValidate onSubmit={handleAjouter}>
+        <form className={classes.form} noValidate onSubmit={handleModifier}>
+       
+
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
                 name="nom"
-                variant="outlined"
-                onChange={handleNomChange}
+                //variant="outlined"
+                label="Nom"
+                onChange={(event) => setNom(event.target.value)}
                 required
                 fullWidth
                 id="nom"
-                label="Nom"
+               // InputLabelProps={{ shrink: true }}
+                value={nom}
                 autoFocus
               />
             </Grid>
@@ -158,7 +204,9 @@ export default function SignUp() {
                 onChange={handlePrenomChange}
                 id="prenom"
                 label="Prenom"
+                value={prenom}
                 name="prenom"
+                InputLabelProps={{ shrink: true }}
                 autoComplete="lname"
               />
             </Grid>
@@ -169,7 +217,8 @@ export default function SignUp() {
                 fullWidth
                 onChange={handleEmailChange}
                 id="email"
-                label="Email Address"
+                
+                value={email}
                 name="email"
                 autoComplete="email"
               />
@@ -183,7 +232,8 @@ export default function SignUp() {
                 fullWidth
                 onChange={handleNtelChange}
                 name="number"
-                label="Numéro de téléphone"
+                
+                value={Ntel}
                 type="text"
                 id="Ntel"
                 autoComplete="Number"
@@ -196,7 +246,8 @@ export default function SignUp() {
                 fullWidth
                 onChange={handleAdresseChange}
                 name="adresse"
-                label="Adresse"
+                
+                value={adresse}
                 type="text"
                 id="adresse"
                 autoComplete="Adresse"
@@ -209,8 +260,9 @@ export default function SignUp() {
             <TextField
           id="standard-select-currency"
           select
-          label="Select"
-          value={currency}
+         
+          value={employe.sexe}
+          value={sexe}
           onChange={handleSexeChange}
           helperText="Choisissez votre sexe"
         >
@@ -229,7 +281,8 @@ export default function SignUp() {
                 fullWidth
                 onChange={handleDatenaissanceChange}
                 name="Date de Naissance"
-                label="Date de Naissance"
+                
+                value={moment(datenaissance).format('YYYY-MM-DD')}
                 type="Date"
                 id="DatedeNaissance"
                 autoComplete="current-DatedeNaissance"
@@ -244,7 +297,8 @@ export default function SignUp() {
                 fullWidth
                 onChange={handleDaterecrutementChange}
                 name="Date de Recrutement"
-                label="Date de Recrutement"
+                
+                value={moment(daterecrutement).format('YYYY-MM-DD')}
                 type="Date"
                 id="DatedeRecrutement"
                 autoComplete="current-DatedeNaissance"

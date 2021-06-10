@@ -14,6 +14,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import "../css/ListeEmployes.css"
 import { supprimee } from '../api';
 import Button from '@material-ui/icons/Edit';
+import {Link, Redirect} from 'react-router-dom';
+import ModifierPersonnel from './ModifierPersonnel'
 
 const columns = [
   { id: 'Nom', label: 'Nom', minWidth: 170 },
@@ -73,14 +75,20 @@ export default function ListeEmployes() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [employees,setEmployees]= useState([]);
+  const [fetching, setFetching] = useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-   useEffect(async()=>
-   {
-     const res=await listeEmployes();
-     console.log("les employes sont::: ",res);  
-     setEmployees(res);
-    },[]
-   )
+
+  useEffect(async()=>{ 
+    fetchEmployes();
+  },[])
+
+  const fetchEmployes = () => {
+    setFetching(true)
+    listeEmployes().then((employees) => {
+      setEmployees(employees)
+      setTimeout(() => setFetching(false), 1000)
+    })
+  }
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -93,12 +101,25 @@ export default function ListeEmployes() {
   const DeleteEmploye =(id) =>{
 
     console.log("je vais supprimer cet ligne",id);
-    supprimee(id);
+    supprimee(id).then(() => {
+      listeEmployes().then((employees) => {
+        setEmployees(employees)
+      })
+    });
+  }
+
+  const EditEmploye =(id) =>{
+
+    <Redirect to="/ModifierPersonnel"/>
+    console.log("je vais modifier cet ligne",id);
+    
+     
   }
    
   return (
     <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
+      { fetching ? <p>fetching ...</p> :
+        <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -144,7 +165,7 @@ export default function ListeEmployes() {
                         {emp.sexe}
                       </TableCell>
 
-                      <TableCell  >
+                      <TableCell>
                         {emp.datenaissance}
                       </TableCell>
 
@@ -154,21 +175,21 @@ export default function ListeEmployes() {
 
                       <TableCell>
                         <DeleteIcon className="icone-delete" onClick={()=>DeleteEmploye(emp._id)}/>
-                        <EditIcon/>
+                        <Link to={`/ModifierPersonnel/${emp._id}`}>
+                        <EditIcon className="icone-edit"/>
+                        </Link>
                       </TableCell>
-                    
-                
                 </TableRow>
               );
             })}
           </TableBody> }
         </Table>
       </TableContainer>
+      }
        <Button variant="contained">Default</Button> 
     </Paper>
   
             
   );
-
 
 }
