@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {ajouter, getEmploye, modifier} from '../api';
+import {ajouter, getEmploye, modifier} from '../../api/api';
 import Menu from '@material-ui/icons/Menu';
 import { List, MenuList } from '@material-ui/core';
 import { useForm } from "react-hook-form";
