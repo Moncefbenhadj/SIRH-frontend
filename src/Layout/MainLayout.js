@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
-import ListeEmployes from './ListeEmployes';
-import AjouterEmployer from './AjouterEmployer';
-import Promotion from './Promotion';
-import Formation from './Formation';
+import ListeEmployes from '../Pages/Employe/ListeEmployes';
+import AjouterEmployer from '../Pages/Employe/AjouterEmployer';
+import Promotion from '../Pages/Promotion/Promotion';
+import Formation from '../Pages/Formation/Formation';
+import Login from '../Pages/Login';
 const WelcomeMain = () => {
     const useStyles = makeStyles((theme) => ({}));
     const classes = useStyles();
@@ -20,13 +21,15 @@ const WelcomeMain = () => {
 
 
 
-                 <Route path="/AjouterEmployer" component={AjouterEmployer} /> 
+                 <Route path="/Employe/Ajouter" component={AjouterEmployer} /> 
 
                  
                  <Route path="/Promotion" component={Promotion} />
 
 
                  <Route path="/Formation" component={Formation} />
+
+                 <Route path="/Login" component={Login} />
 
 
             </Switch>

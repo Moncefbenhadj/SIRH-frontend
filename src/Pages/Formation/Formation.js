@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles , useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,24 +8,17 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import {listeEmployes} from '../api';
+import {listeEmployes} from '../../api/api';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import "../css/ListeEmployes.css"
-import { supprimee } from '../api';
+import "../../css/ListeEmployes.css"
+import { supprimee } from '../../api/api';
 import Button from '@material-ui/icons/Edit';
 
 const columns = [
   { id: 'Nom', label: 'Nom', minWidth: 170 },
   { id: 'Prenom', label: 'Prenom', minWidth: 100 },
-  {id: 'Email', label: 'Email', minWidth: 100 },
-  {id: 'Ntel', label: 'Ntel' },
-  {id: 'adresse', label: 'adresse' },
-  {id: 'sexe', label: 'sexe' },
-  {id: 'datenaissance', label: 'datenaissance' },
-  {id: 'daterecrutement', label: 'daterecrutement' },
-  {id: 'Action', label: 'Action' },
-  
+  {id: 'Formation', label: 'Formation' },
   /*{
     id: 'population',
     label: 'Population',
@@ -62,7 +55,6 @@ const useStyles = makeStyles({
     maxHeight: 440,
     
   },
-  
 });
 
 
@@ -73,28 +65,15 @@ export default function ListeEmployes() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [employees,setEmployees]= useState([]);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
    useEffect(async()=>
    {
-     const res=await listeEmployes();
-     console.log("les employes sont::: ",res);  
+     const res=await listeEmployes();  
      setEmployees(res);
     },[]
    )
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  const DeleteEmploye =(id) =>{
-
-    console.log("je vais supprimer cet ligne",id);
-    supprimee(id);
-  }
    
   return (
     <Paper className={classes.root}>
@@ -120,41 +99,17 @@ export default function ListeEmployes() {
                   
                    
                                           
-                      <TableCell  >
+                      <TableCell>
                         {emp.nom}
                       </TableCell>
                       
-                      <TableCell  >
+                      <TableCell>
                         {emp.prenom}
                       </TableCell>
-
-                      <TableCell  >
-                        {emp.email}
-                      </TableCell>
-
-                      <TableCell  >
-                        {emp.Ntel}
-                      </TableCell>
-
-                      <TableCell  >
-                        {emp.adresse}
-                      </TableCell>
-
-                      <TableCell  >
-                        {emp.sexe}
-                      </TableCell>
-
-                      <TableCell  >
-                        {emp.datenaissance}
-                      </TableCell>
-
-                      <TableCell  >
-                        {emp.daterecrutement}
-                      </TableCell>
-
+                      
                       <TableCell>
-                        <DeleteIcon className="icone-delete" onClick={()=>DeleteEmploye(emp._id)}/>
-                        <EditIcon/>
+                        
+                                        
                       </TableCell>
                     
                 
@@ -164,7 +119,9 @@ export default function ListeEmployes() {
           </TableBody> }
         </Table>
       </TableContainer>
-       <Button variant="contained">Default</Button> 
+      <Button variant="contained" color="primary" href="">
+  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+</Button>
     </Paper>
   
             

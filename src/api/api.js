@@ -38,12 +38,11 @@ export const listeEmployes = async() => {
 
     })*/
         
-    await fetch('http://localhost:3000/api/employe/afficher', {
+    await fetch('http://localhost:3000/api/employe', {
         method:'GET',
         //body: reqBody,
         headers: {
-            'Content-Type': 'Application/json'
-            
+            'Content-Type': 'Application/json'         
         }
     
     }).then(
@@ -61,7 +60,7 @@ export const listeEmployes = async() => {
 export const supprimee = (id) => {
     
         
-    fetch('http://localhost:3000/api/employe/supprimer/'+id, {
+    return fetch('http://localhost:3000/api/employe/'+id, {
         method:'DELETE',
         
         headers: {
