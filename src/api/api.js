@@ -42,8 +42,7 @@ export const listeEmployes = () => {
         method:'GET',
         //body: reqBody,
         headers: {
-            'Content-Type': 'Application/json'
-            
+            'Content-Type': 'Application/json'         
         }
     
     }).then(
